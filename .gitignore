@@ -1,0 +1,9 @@
+*.py[cod]
+*.pyc
+
+# venv
+django
+virtualenv.py
+
+# download folder
+cerberusclient/marketplace/downloads

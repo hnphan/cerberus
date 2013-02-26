@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>Market place</h1>
+
+	{% if packages %}
+    <ul>
+	    {% for package in packages %}
+	        <li><a href="{{package.pid}}/">{{ package.title }}</a> by {{ package.developer }}</li>
+	    {% endfor %}
+    </ul>
+	{% else %}
+	    <p>No packages available.</p>
+	{% endif %}
+
+{% endblock %}
