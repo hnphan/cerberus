@@ -2,6 +2,8 @@ from django.conf.urls import patterns, include, url
 from cerberusclient import views
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+import settings
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -15,4 +17,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_URL, 'show_indexes':True}),
 )
+
+#urlpatterns += staticfiles_urlpatterns()

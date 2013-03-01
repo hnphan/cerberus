@@ -1,5 +1,6 @@
 # Django settings for cerberusclient project.
 import os
+BASE_DIR = os.path.dirname(__file__)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -57,17 +58,16 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
+
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+     os.path.join(BASE_DIR, 'bootmetro'),
 )
 
 # List of finder classes that know how to find static files in
@@ -153,6 +153,6 @@ LOGGING = {
     }
 }
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 
