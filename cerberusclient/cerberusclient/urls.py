@@ -4,6 +4,7 @@ from cerberusclient import views
 from django.contrib import admin
 import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -11,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^$', views.home, name='home'),
     url(r'^shutdown/', views.shutdown, name='shutdown'),
     url(r'^marketplace/', include('marketplace.urls')),
+    url(r'^system/', include('system.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

@@ -1,40 +1,47 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h1>Package detail</h1>
-
-	{% if package %}
-    <ul>
-   	<li>{{ package.title }} by {{ package.developer }}</li>
-    <div>url: {{ package.location}}</div>
-    <div id="download_link">Download package</div>
-    <p id="download_status"></div>
-    </div>
-    </ul>
 	
-	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
-	<script>
-		$(document).ready(function(){
-			$("#download_link").click(function(){
-				$.getJSON("./download/",{command: "start_download"}, 
-					function(data){
-						// no need to do anything, since we just have to trigger the download
-						//$("#download_status").html("Download status: " + data.json_list[0].status)
-				}); 
-				$(this).hide()
-				// get download status from database
-				setInterval(function() {
- 					$.getJSON("./download/",{command: "download_status"}, 
-					function(data){
-						$("#download_status").text("Download status: " + data.status + "%");
-					}); 
-				}, 3000);
-			});
-		});
-	</script>
-	{% else %}
+<div class="container-fluid">
+	<div class="row-fluid">
+		{% if package %}
+		<h2>{{ package.title }} by {{ package.developer }}</h2>
+		<br/>
+		<p> Game information and pictures go here. Game information and pictures go here.
+		Game information and pictures go here. </p>
+		<p> Game information and pictures go here. Game information and pictures go here.
+		Game information and pictures go here. </p>
+		<br/>
+		<button id="bttnDownload" class="btn btn-large btn-primary" type="button">Download & Install</button>
+		{% else %}
 	    <p>No packages available.</p>
-	{% endif %}
+		{% endif %}
+	</div>
+</div>
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script>
+	$(document).ready(function(){
+		// get download status from database
+		setInterval(function() {
+				$.getJSON("./download/",{command: "download_status"}, 
+			function(data){
+				$("#bttnDownload").text("Download status: " + data.status + "%");
+				if (data.status == 100) {$("#bttnDownload").text("Download completed");}
+			}); 
+		}, 500);
+		$("#bttnDownload").click(function(){
+			$(this).text("Download starting...")
+			$.getJSON("./download/",{command: "start_download"}, 
+				function(data){
+					// no need to do anything, since we just have to trigger the download
+					//$("#download_status").html("Download status: " + data.json_list[0].status)
+			}); 
+			//$(this).hide()
+		});
+	});
+</script>
+
 
 {% endblock %}

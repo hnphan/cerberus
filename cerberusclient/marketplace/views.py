@@ -1,10 +1,13 @@
 from django.shortcuts import render, get_list_or_404
 from django.http import HttpResponse
+from django.utils import timezone
 from marketplace.models import Package
+from system.models import Message
 import urllib2, json
 import os
 import math
 import simplejson
+
 
 PACKAGES_URL = 'http://localhost:8000/api/packages/'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -54,6 +57,7 @@ def download(request, package_id):
 				triggerDownload(package_id, packages[0])
 			else: 
 				print "Package already download and installed"
+		return HttpResponse(status=200)
 	
 	elif request.GET['command'] == "download_status":
 		packages = get_list_or_404(Package, pid=package_id)
@@ -74,6 +78,9 @@ def triggerDownload(package_id, package_object):
 		req = urllib2.Request(url)
 
 		downloaded_file = downloadChunks(url, package_object)
+		# once finished downloading, send notification
+		message = Message(content="Cerberus has finished downloading " + package_object.title, timestamp = timezone.now(), seen= False)
+		message.save()
 		#return render(request,'marketplace/download.html', {'package':data})					
 	
 	except:
