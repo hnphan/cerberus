@@ -24,29 +24,7 @@ $(function(){
    }
 
 
-   $("#notifs").click(function (e) {
-      e.preventDefault();
-      $('#charms').charms('showSection', 'theme-charms-section');
-      $.getJSON("../../system/recent_notifs/", function(data){      
-         var notifHtml = "";
-         if (data.length ==0) {
-            notifHtml = "You have no notifications.";
-         }
-         else {
-            for (var i=data.length-1; i>=0; i--) {
-               if (data[i].seen == true) {
-                  notifHtml += '<tr class = "seenNotif"><td>' + data[i].content +'</td></tr>';
-               }
-               else {
-                  notifHtml += '<tr class = "unseenNotif"><td>' + data[i].content + '</td></tr>';
-                  $.getJSON("../../system/mark_as_seen", {messageID : data[i].id},
-                     function(data){});
-               }
-            }
-         }
-      $("#notifContent").html(notifHtml);
-      }); 
-   });
+
 
 
 
