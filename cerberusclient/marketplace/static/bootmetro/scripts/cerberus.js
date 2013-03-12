@@ -7,13 +7,13 @@ setInterval(function() {
          icon = document.getElementById("notiIcon");
          icon.className = "icon-spinner icon-3x icon-spin";
          icon.style.color = 'red';
-         //icon.style.textDecoration = 'none';
+         icon.style.textDecoration = 'none';
       }
       else {
          icon = document.getElementById("notiIcon");
          icon.className = "icon-spinner icon-3x";
          icon.style.color = 'grey';
-         //icon.style.textDecoration = 'none';
+         icon.style.textDecoration = 'none';
       }
    }); 
 }, 500);
