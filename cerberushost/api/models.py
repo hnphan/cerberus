@@ -11,12 +11,10 @@ class Package(models.Model):
 	title = models.CharField(max_length=200)
 	developer = models.ForeignKey(User, related_name='packages')
 	location = models.CharField(max_length=200)
-	
+	version = models.CharField(max_length=10)
+
 	class Meta:
 		ordering = ('title',)
 
 	def __unicode__(self):
 		return self.title
-
-
-

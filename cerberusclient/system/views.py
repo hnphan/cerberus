@@ -7,7 +7,6 @@ import simplejson
 def home(request):
 	return "Hello world!"
 
-
 # Get the most recent notifications
 def getRecentNotifs(request, n=10):
 	jsonSerializer = JSONSerializer()

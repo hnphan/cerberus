@@ -11,13 +11,14 @@ $(function(){
          else {
             for (var i=data.length-1; i>=0; i--) {
                if (data[i].seen == true) {
-                  notifHtml += '<tr class = "seenNotif"><td>' + data[i].content +'</td></tr>';
+                  notifHtml += '<tr class = "seenNotif"><td>' + data[i].content;
                }
                else {
-                  notifHtml += '<tr class = "unseenNotif"><td>' + data[i].content + '</td></tr>';
+                  notifHtml += '<tr class = "unseenNotif"><td>' + data[i].content;
                   $.getJSON("../../system/mark_as_seen", {messageID : data[i].id},
                      function(data){});
                }
+               notifHtml += '<br/><small>' + data[i].timestamp + '</small></td></tr>'
             }
          }
       $("#notifContent").html(notifHtml);

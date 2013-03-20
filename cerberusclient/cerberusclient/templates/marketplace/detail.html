@@ -23,23 +23,42 @@
 <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
 <script>
 	$(document).ready(function(){
+		
 		// get download status from database
 		setInterval(function() {
 				$.getJSON("./download/",{command: "download_status"}, 
-			function(data){
-				$("#bttnDownload").text("Download status: " + data.status + "%");
-				if (data.status == 100) {$("#bttnDownload").text("Download completed");}
+				function(data){
+				//$("#bttnDownload").text("Download status: " + data.status + "%");
+				// if package is already installed, make this button unclickable
+				if (data.status == -1) {
+					$("#bttnDownload").click(function(){
+						$(this).text("Download starting...");
+						$.getJSON("./download/",{command: "start_download"}, 
+							function(data){
+							// no need to do anything, since we just have to trigger the download
+							$("#bttnDownload").text("Download starting... ");
+							$("#bttnDownload").click(function(){});
+						}); 
+					});					
+				}
+				else if (data.status == 0) {
+					$("#bttnDownload").text(data.download_status + "% downloaded");
+					$("#bttnDownload").click(function(){});
+				}
+
+				else if (data.status == 1) {
+					$("#bttnDownload").text("Installing...");
+					$("#bttnDownload").click(function(){});
+				}
+				else if (data.status == 2) {
+					$("#bttnDownload").text("Installed");
+					$("#bttnDownload").click(function(){});
+				}
+
 			}); 
 		}, 500);
-		$("#bttnDownload").click(function(){
-			$(this).text("Download starting...")
-			$.getJSON("./download/",{command: "start_download"}, 
-				function(data){
-					// no need to do anything, since we just have to trigger the download
-					//$("#download_status").html("Download status: " + data.json_list[0].status)
-			}); 
-			//$(this).hide()
-		});
+		
+
 	});
 </script>
 

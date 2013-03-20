@@ -9,7 +9,7 @@ class PackageSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Package
-        fields = ('pid','url', 'title', 'developer', 'location')
+        fields = ('pid','url', 'title', 'developer', 'location','version')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
