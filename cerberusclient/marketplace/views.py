@@ -5,6 +5,7 @@ from django.utils import timezone
 from system.models import LocalPackage
 from system.models import Message
 from system import commands
+from system import settings as systemsettings
 import urllib2, json
 import os
 import math
@@ -12,6 +13,7 @@ import simplejson
 from django.db import models
 import time
 import zipfile
+from cerberusclient import settings
 
 
 
@@ -20,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DOWNLOAD_DIR = os.path.join(BASE_DIR, 'downloads')
 TEMP_DIR = os.path.join(DOWNLOAD_DIR, 'tmp')
 
-# Create your views here.
+
 def home(request):
 	try:
 		response = urllib2.urlopen(PACKAGES_URL)
@@ -31,6 +33,7 @@ def home(request):
 	except:
 		print "Could not fetch packages data."
 		return render(request,'marketplace/index.html', None)
+
 
 def package_detail(request, package_id):
 	try:
@@ -44,6 +47,7 @@ def package_detail(request, package_id):
 	except:
 		print "Could not fetch packages data."
 		return render(request,'marketplace/detail.html', None)	
+
 
 def download(request, package_id):
 	'''
@@ -75,6 +79,7 @@ def download(request, package_id):
 			# if the package object hasn't been stored in db
 			return HttpResponse(simplejson.dumps({'status':-1}), 'application/json')
 
+
 def triggerDownload(package_id, package_object):
 	try:
 		this_package_url = PACKAGES_URL + package_id
@@ -84,7 +89,6 @@ def triggerDownload(package_id, package_object):
 		url = data['location']
 
 		if package_object==None:
-			path = models.FilePathField(path='TEMP_DIR')
 			package_object = LocalPackage(pid=data['pid'],title=data['title'], developer=data['developer'], version=data['version'], status=0, location=TEMP_DIR, download_status=0)		
 			package_object.save()
 
@@ -94,10 +98,16 @@ def triggerDownload(package_id, package_object):
 		# once finished downloading, send notification
 		print "sending notification............................"
 		commands.sendSystemMessage(content = "Cerberus has finished downloading " + package_object.title)
+		print "Finished download. Start unzipping..." + systemsettings.LOCALPACKAGE_DIR
 		package_object.status = 1
 		package_object.save()
+
+
+		filename = url.split('/')[-1].split('#')[0].split('?')[0]
+		packageName = filename.split(".")[0]
+		unzip(os.path.join(TEMP_DIR,filename), systemsettings.LOCALPACKAGE_DIR)
+		print "Finished unzipping...."		
 		package_object.status = 2
-		time.sleep(3)
 		package_object.save()
 		commands.sendSystemMessage(content = "Cerberus has installed " + package_object.title)
 
@@ -108,6 +118,7 @@ def triggerDownload(package_id, package_object):
 	except Exception as e:
 		print "Exception" + e
 		#return render(request,'marketplace/download.html', None)
+
 
 def downloadChunks(url, package_object):
     """Helper to download large files
@@ -152,7 +163,6 @@ def downloadChunks(url, package_object):
         return False
  
     return file_
-
 
 def unzip(source_filename, dest_dir):
     with zipfile.ZipFile(source_filename) as zf:

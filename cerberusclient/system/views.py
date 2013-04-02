@@ -32,3 +32,4 @@ def markAsSeen(request):
 	notif.seen = True
 	notif.save()
 	return HttpResponse(status=200)
+
