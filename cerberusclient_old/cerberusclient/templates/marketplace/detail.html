@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+	
+<div class="container-fluid">
+	<div class="row-fluid">
+		{% if package %}
+		<h2>{{ package.title }} by {{ package.developer }}</h2>
+		<br/>
+		<p> Game information and pictures go here. Game information and pictures go here.
+		Game information and pictures go here. </p>
+		<p> Game information and pictures go here. Game information and pictures go here.
+		Game information and pictures go here. </p>
+		<br/>
+		<button id="bttnDownload" class="btn btn-large btn-primary" type="button">Download & Install</button>
+		{% else %}
+	    <p>No packages available.</p>
+		{% endif %}
+	</div>
+</div>
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script>
+	$(document).ready(function(){
+		
+		// get download status from database
+		setInterval(function() {
+				$.getJSON("./download/",{command: "download_status"}, 
+				function(data){
+				//$("#bttnDownload").text("Download status: " + data.status + "%");
+				// if package is already installed, make this button unclickable
+				if (data.status == -1) {
+					$("#bttnDownload").click(function(){
+						$(this).text("Download starting...");
+						$.getJSON("./download/",{command: "start_download"}, 
+							function(data){
+							// no need to do anything, since we just have to trigger the download
+							$("#bttnDownload").text("Download starting... ");
+							$("#bttnDownload").click(function(){});
+						}); 
+					});					
+				}
+				else if (data.status == 0) {
+					$("#bttnDownload").text(data.download_status + "% downloaded");
+					$("#bttnDownload").click(function(){});
+				}
+
+				else if (data.status == 1) {
+					$("#bttnDownload").text("Installing...");
+					$("#bttnDownload").click(function(){});
+				}
+				else if (data.status == 2) {
+					$("#bttnDownload").text("Installed");
+					$("#bttnDownload").click(function(){});
+				}
+
+			}); 
+		}, 500);
+		
+
+	});
+</script>
+
+
+{% endblock %}
