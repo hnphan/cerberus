@@ -1,5 +1,17 @@
-# Django settings for cerberushost project.
-import os
+"""
+Django settings for cerberushost2 project.
+
+Common settings for all environments. Don't directly use this settings file,
+use environments/development.py or environments/production.py and import this
+file from there.
+"""
+import sys
+from path import path
+from django.conf import global_settings
+
+PROJECT_ROOT = path(__file__).abspath().dirname().dirname()
+sys.path.insert(0, PROJECT_ROOT / 'libs')
+sys.path.insert(0, PROJECT_ROOT / 'apps')
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -9,17 +21,6 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'sqlite3.db', # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -31,33 +32,33 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 2
+SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
+USE_I18N = False
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
-USE_L10N = True
+USE_L10N = False
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = PROJECT_ROOT / 'public/media'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = PROJECT_ROOT / 'public/static'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -65,9 +66,10 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    'C:/Users/Hieu/Dropbox/UCL/cerberus/cerberushost/static',
+    # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    PROJECT_ROOT / 'static',
 )
 
 # List of finder classes that know how to find static files in
@@ -79,7 +81,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'zlnhdx^@m(-oa(=-js(4sjiia&amp;*vr2o5m@_o2u5t%9p8^&amp;!d6+'
+SECRET_KEY = '+@l03p=wn)fqzr_0errc-kji%umny+9f)bh#um=_o5_65nip@$'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -98,37 +100,41 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'cerberushost.urls'
+ROOT_URLCONF = 'config.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'cerberushost.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    PROJECT_ROOT / 'templates/',
 )
 
 INSTALLED_APPS = (
+    # 'grappelli.dashboard',
+    'grappelli',
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'polls',
-    'api',
-    'rest_framework',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
-    'django.contrib.admindocs',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google',
+    # 'django.contrib.admindocs',
+
+    # 3rd party apps
     'south',
+    'django_extensions',
+    'compressor',
+    'rest_framework',
+    'api',
+
+    # Project specific apps go here
+    # 'my_app',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -160,17 +166,19 @@ LOGGING = {
     }
 }
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + ()
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.request',
-    'django.contrib.auth.context_processors.auth',
-    'allauth.account.context_processors.account',
-    'allauth.socialaccount.context_processors.socialaccount'
+STATICFILES_FINDERS = global_settings.STATICFILES_FINDERS + (
+    'compressor.finders.CompressorFinder',
 )
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGINATE_BY': 10
-}
+
+# Third-party app settings
+
+# django-compressor
+COMPRESS_ROOT = STATIC_ROOT
+COMPRESS_CSS_FILTERS = ['compressor.filters.cssmin.CSSMinFilter']
+COMPRESS_JS_FILTERS = ['compressor.filters.jsmin.JSMinFilter']
+
+# django-grappelli
+GRAPPELLI_ADMIN_TITLE = "Cerberushost2 Admin"

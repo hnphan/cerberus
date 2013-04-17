@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>Download</h1>
+
+	{% if package %}
+    <ul>
+   	<li>{{ package.title }} by {{ package.developer }}</li>
+    url: {{ package.location}}
+    </ul>
+	{% else %}
+	    <p>No packages available.</p>
+	{% endif %}
+
+{% endblock %}
