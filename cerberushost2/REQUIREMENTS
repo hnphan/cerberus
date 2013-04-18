@@ -1,8 +1,0 @@
-path.py
-Django
-south
-fabric
-django-grappelli
-django-extensions
-
-git+git://github.com/jezdez/django_compressor.git
