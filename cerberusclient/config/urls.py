@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^marketplace/', include('marketplace.urls')),
     url(r'^system/', include('system.urls')),
+    url(r'^games/', include('games.urls')),
 )
 
 urlpatterns += staticfiles_urlpatterns()

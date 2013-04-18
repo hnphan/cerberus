@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+	<div class="row-fluid">
+    	<div class="metro span12">
+        	<div class="metro-sections">   
+               <div id="section1" class="metro-section">  
+					<h2>installed games</h2>   
+   
+					{% if packages %}
+					{% for package in packages %}
+
+					<a class="tile app bg-color-blue" id="{{package.id}}" href="javascript:void(0);">
+	                    <div class="image-wrapper">
+	                        <img src="http://i863.photobucket.com/albums/ab192/shamrocksu88/angry-birds-icon.png" alt="Angry Bird"/>
+	                    </div>
+	                    <span class="app-label">{{package.title}}</span>
+                  	</a>
+					<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+					<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>                  	
+                  	<script>
+                  		$(document).ready(function(){
+                  			$("#{{package.id}}").click(function(){
+                  			$.getJSON("{{package.id}}",{command: "start"}, 
+							function(data){
+							// possibly display a status message?
+						}); 
+                  			});
+                  		});
+                  	</script>
+					
+					{% endfor %}
+					{% else %}
+					<p>You have no games installed. Check out the <a href="../marketplace/">marketplace</a> for fun games!</p>
+					{% endif %}
+               </div>
+            </div>
+		</div>
+	</div>
+</div>
+{% endblock %}

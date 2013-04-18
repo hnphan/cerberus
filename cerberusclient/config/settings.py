@@ -132,6 +132,7 @@ INSTALLED_APPS = (
     'compressor',
     'apps.marketplace',
     'apps.system',
+    'apps.games',
 
     # Project specific apps go here
     # 'my_app',

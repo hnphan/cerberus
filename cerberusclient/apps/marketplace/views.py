@@ -29,7 +29,7 @@ def home(request):
 		print "load json =================="
 		data = json.load(response)
 		print "HLLOOOOO--------->"
-		return render(request,'marketplace/index.html', {'packages':data})
+		return render(request, 'marketplace/index.html', {'packages':data, 'title':"marketplace"})
 
 	except:
 		print "Could not fetch packages data."
@@ -106,9 +106,11 @@ def triggerDownload(package_id, package_object):
 
 		filename = url.split('/')[-1].split('#')[0].split('?')[0]
 		packageName = filename.split(".")[0]
-		unzip(os.path.join(TEMP_DIR,filename), systemsettings.LOCALPACKAGE_DIR)
-		print "Finished unzipping...."		
-		package_object.status = 2
+		local_path = os.path.join(systemsettings.LOCALPACKAGE_DIR, packageName)	
+		unzip(os.path.join(TEMP_DIR,filename), local_path)
+		print "Finished unzipping...."
+		package_object.location = local_path
+		package_object.status = 2 # change package status to "installed"
 		package_object.save()
 		commands.sendSystemMessage(content = "Cerberus has installed " + package_object.title)
 
@@ -164,6 +166,7 @@ def downloadChunks(url, package_object):
         return False
  
     return file_
+
 
 def unzip(source_filename, dest_dir):
     with zipfile.ZipFile(source_filename) as zf:
