@@ -12,9 +12,9 @@
   <meta name="viewport" content="width=device-width">
 
   {% if title %}
-  <title>{{title}} · Cerberus Client App</title>
+  <title>{{title}} · Cerberus Server</title>
   {% else %}
-  <title>Cerberus Client App</title>
+  <title>Cerberus Server</title>
   {% endif %}
 
   <!-- remove or comment this line if you want to use the local fonts -->
@@ -25,7 +25,7 @@
   <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}bootmetro/content/css/bootmetro.css">
   <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}bootmetro/content/css/bootmetro-tiles.css">
   <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}bootmetro/content/css/bootmetro-charms.css">
-  <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}bootmetro/content/css/metro-ui-dark.css">
+  <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}bootmetro/content/css/metro-ui-cerberus.css">
   <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}bootmetro/content/css/icomoon.css">
   <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}bootmetro/content/css/cerberus.css">
   <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}fontawesome/css/font-awesome.min.css">
@@ -76,19 +76,27 @@
             </div>
          </div>
          <div id="top-info" class="pull-right">
-         <a href="#" class="pull-left">
+         <div class="pull-left">
+            {% if user.is_authenticated %} 
             <div class="top-info-block">
-               <h3>FirstName</h3>
-               <h4>LastName</h4>
             </div>
+            <b class="icon-user"></b>
             <div class="top-info-block">
-               <b class="icon-user"></b>
+            <h3><a href="/accounts/">{{ user.username }}</a></h3>
+            <a href="/accounts/logout/">Log out</a>
             </div>
-         </a>
-         <hr class="separator pull-left"/>
-         <a id="notifs" class="pull-left" href="#">
-            <i id="notiIcon" class="icon-spinner icon-3x"></i>
-         </a>
+
+
+ <div class="btn-group">
+
+</div>
+            {% else %} 
+            <div class="top-info-block">
+            <button class="btn btn-info" type="button" onclick="window.location.href='/accounts/login/'">Sign in</button>
+            </div>
+            {% endif %} 
+         </div>
+
       </div>
    </div>
    </header>
@@ -97,22 +105,6 @@
   {% endblock content %}  
    </div>
    
-   <div id="charms" class="win-ui-dark">
-      <div id="theme-charms-section" class="charms-section">
-         <div class="charms-header">
-            <a href="#" class="close-charms win-command">
-               <span class="win-commandimage win-commandring">&#xe05d;</span>
-            </a>
-            <h2>Notifications</h2>
-         </div>
-        <div id="notifarea">
-              <table id= "notifContent" class = "table table-hover">
-              <!-- place holder for notifcation messages -->
-              </table>
-         </div>
-      </div>
-   
-   </div>
 
    <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
