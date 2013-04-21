@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import categories
 
 class UserData(models.Model):
     user = models.ForeignKey(User, editable=True)
@@ -12,6 +13,7 @@ class Package(models.Model):
 	developer = models.ForeignKey(User, related_name='packages')
 	location = models.CharField(max_length=200)
 	version = models.CharField(max_length=10)
+	category = models.ForeignKey('categories.Category')
 
 	class Meta:
 		ordering = ('title',)

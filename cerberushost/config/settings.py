@@ -137,6 +137,8 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
+    'categories',
+    'categories.editor',
 
     # Project specific apps go here
     # 'my_app',
