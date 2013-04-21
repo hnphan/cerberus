@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+	<div class="row-fluid">
+    	<div class="metro span12">
+        	<div class="metro-sections">   
+               <div id="section1" class="metro-section">  
+					<div class = "">
+					<h2>package manager</h2>
+					<p>Use package manager to easily remove and update your installed packages.</p>   
+					<br/>
+					</div>
+   
+					{% if packages %}
+					{% for package in packages %}
+
+					<div id="div{{package.id}}">
+						{{package.title}}
+						<a id="update{{package.id}}" href="javascript:void(0);">update</a>
+						<a id="remove{{package.id}}" href="javascript:void(0);">remove</a>
+                  	</div>
+					<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+					<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>                  	
+                  	<script>
+                  		$(document).ready(function(){
+                  			$("#remove{{package.id}}").click(function(){
+                  			
+                  			$.getJSON("remove/{{package.id}}", 
+							function(data){
+								if (data['status'] == 200) {
+									$("#div{{package.id}}").hide();
+								}
+								else if (data['status'] = 500) {
+
+								}
+						}); 
+                  			});
+                  		});
+                  	</script>
+					
+					{% endfor %}
+					{% else %}
+					<p>You have no games installed. Check out the <a href="../marketplace/">marketplace</a> for fun games!</p>
+					{% endif %}
+               </div>
+            </div>
+		</div>
+	</div>
+</div>
+{% endblock %}

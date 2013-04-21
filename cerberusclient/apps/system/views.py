@@ -1,8 +1,11 @@
 from django.shortcuts import render, get_list_or_404, get_object_or_404
 from django.http import HttpResponse
-from system.models import Message
+from system.models import Message, LocalPackage
 from libs.serializer import JSONSerializer
 import simplejson
+import shutil
+from system import commands
+
 
 def home(request):
 	return "Hello world!"
@@ -32,4 +35,25 @@ def markAsSeen(request):
 	notif.seen = True
 	notif.save()
 	return HttpResponse(status=200)
+
+# Package manager
+def pacMan(request):
+	# get all installed package
+	installed_packages = LocalPackage.objects.filter(status=2)
+	return render(request,'system/pacman/index.html', {'packages':installed_packages, 'title': "package manager"})
+
+def pacManRemove(request, package_id):
+	try:
+		package = LocalPackage.objects.get(pk=package_id)
+		# go to package local path
+		path = package.location
+		shutil.rmtree(path)
+		title = package.title
+		package.delete()
+		commands.sendSystemMessage(content = "Cerberus has successfully removed " + title)
+	except:
+		commands.sendSystemMessage(content = "An error occurred while removing " + title)
+		return HttpResponse(simplejson.dumps({'status':500}), 'application/json')
+	return HttpResponse(simplejson.dumps({'status':200}), 'application/json')
+
 

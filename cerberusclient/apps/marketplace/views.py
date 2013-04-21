@@ -16,7 +16,7 @@ import zipfile
 
 
 
-PACKAGES_URL = 'http://localhost:8000/api/packages/'
+PACKAGES_URL = 'http://cerberusserver.cloudapp.net/api/packages/'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DOWNLOAD_DIR = os.path.join(BASE_DIR, 'downloads')
 TEMP_DIR = os.path.join(DOWNLOAD_DIR, 'tmp')
