@@ -76,30 +76,22 @@
             </div>
          </div>
          <div id="top-info" class="pull-right">
-         <div class="pull-left">
+          <div class="pull-left">
             {% if user.is_authenticated %} 
-            <div class="top-info-block">
-            </div>
-            <b class="icon-user"></b>
             <div class="top-info-block">
             <h3><a href="/accounts/">{{ user.username }}</a></h3>
             <a href="/accounts/logout/">Log out</a>
             </div>
-
-
- <div class="btn-group">
-
-</div>
+          </div>
             {% else %} 
             <div class="top-info-block">
             <button class="btn btn-info" type="button" onclick="window.location.href='/accounts/login/'">Sign in</button>
             </div>
             {% endif %} 
          </div>
-
       </div>
-   </div>
-   </header>
+  
+  </header>
   <div class="container-fluid">
   {% block content %}
   {% endblock content %}  
