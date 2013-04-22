@@ -8,7 +8,7 @@ def get_media_upload_dir(instance, filename):
     user_id  = instance.developer.id
     today = datetime.now()
     now_path = today.strftime("%Y%m%d%H%M%S")
-    upload_dir = "%s/%d/%s/%s" % (settings.MEDIA_ROOT, user_id, now_path, filename)
+    upload_dir = "%s/%d/%s/%s" % (settings.STATIC_URL, user_id, now_path, filename)
     print "Upload dir set to: %s" % upload_dir
     return upload_dir
 
