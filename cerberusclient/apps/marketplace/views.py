@@ -15,7 +15,7 @@ import time
 import zipfile
 
 
-
+CERBERUS_SERVER = 'http://cerberusserver.cloudapp.net'
 PACKAGES_URL = 'http://cerberusserver.cloudapp.net/api/packages/'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DOWNLOAD_DIR = os.path.join(BASE_DIR, 'downloads')
@@ -87,7 +87,8 @@ def triggerDownload(package_id, package_object):
 		print this_package_url
 		response = urllib2.urlopen(this_package_url)
 		data = json.load(response)
-		url = data['package_file']
+		url = CERBERUS_SERVER + data['package_file']
+		print "++++++++++++++++++++++++" + url
 
 		if package_object==None:
 			package_object = LocalPackage(pid=data['pid'],title=data['title'], developer=data['developer'], version=data['version'], status=0, location=TEMP_DIR, download_status=0)		
@@ -119,7 +120,7 @@ def triggerDownload(package_id, package_object):
 		#return render(request,'marketplace/download.html', {'package':data})					
 	
 	except Exception as e:
-		print "Exception" + e
+		print "Exception" 
 		#return render(request,'marketplace/download.html', None)
 
 
