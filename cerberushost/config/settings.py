@@ -139,6 +139,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
     'categories',
     'categories.editor',
+    'apps.games'
 
     # Project specific apps go here
     # 'my_app',

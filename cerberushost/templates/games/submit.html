@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+	
+<div class="container-fluid">
+	<h2> Submit a new game </h2>
+	<br/>
+	<div class="row-fluid">
+        <form action="/games/submit/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.as_p}}
+            <p><input type="submit" value="Upload" /></p>
+        </form>
+	</div>
+</div>
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script>
+	$(document).ready(function(){
+		
+		// get download status from database
+		setInterval(function() {
+				$.getJSON("./download/",{command: "download_status"}, 
+				function(data){
+				//$("#bttnDownload").text("Download status: " + data.status + "%");
+				// if package is already installed, make this button unclickable
+				if (data.status == -1) {
+					$("#bttnDownload").click(function(){
+						$(this).text("Download starting...");
+						$.getJSON("./download/",{command: "start_download"}, 
+							function(data){
+							// no need to do anything, since we just have to trigger the download
+							$("#bttnDownload").text("Download starting... ");
+							$("#bttnDownload").click(function(){});
+						}); 
+					});					
+				}
+				else if (data.status == 0) {
+					$("#bttnDownload").text(data.download_status + "% downloaded");
+					$("#bttnDownload").click(function(){});
+				}
+
+				else if (data.status == 1) {
+					$("#bttnDownload").text("Installing...");
+					$("#bttnDownload").click(function(){});
+				}
+				else if (data.status == 2) {
+					$("#bttnDownload").text("Installed");
+					$("#bttnDownload").click(function(){});
+				}
+
+			}); 
+		}, 500);
+		
+
+	});
+</script>
+
+
+{% endblock %}

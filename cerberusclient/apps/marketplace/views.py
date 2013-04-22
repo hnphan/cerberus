@@ -87,7 +87,7 @@ def triggerDownload(package_id, package_object):
 		print this_package_url
 		response = urllib2.urlopen(this_package_url)
 		data = json.load(response)
-		url = data['location']
+		url = data['package_file']
 
 		if package_object==None:
 			package_object = LocalPackage(pid=data['pid'],title=data['title'], developer=data['developer'], version=data['version'], status=0, location=TEMP_DIR, download_status=0)		

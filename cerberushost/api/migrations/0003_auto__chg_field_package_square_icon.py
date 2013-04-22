@@ -8,25 +8,14 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Package'
-        db.create_table(u'api_package', (
-            ('pid', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=200)),
-            ('developer', self.gf('django.db.models.fields.related.ForeignKey')(related_name='packages', to=orm['auth.User'])),
-            ('package_file', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
-            ('square_icon', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
-            ('caption_picture', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
-            ('version', self.gf('django.db.models.fields.CharField')(max_length=10)),
-            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['categories.Category'])),
-            ('download_count', self.gf('django.db.models.fields.PositiveIntegerField')(default=0)),
-        ))
-        db.send_create_signal(u'api', ['Package'])
 
+        # Changing field 'Package.square_icon'
+        db.alter_column(u'api_package', 'square_icon', self.gf('django.db.models.fields.files.FileField')(max_length=100, null=True))
 
     def backwards(self, orm):
-        # Deleting model 'Package'
-        db.delete_table(u'api_package')
 
+        # User chose to not deal with backwards NULL issues for 'Package.square_icon'
+        raise RuntimeError("Cannot reverse this migration. 'Package.square_icon' and its values cannot be restored.")
 
     models = {
         u'api.package': {
@@ -37,7 +26,7 @@ class Migration(SchemaMigration):
             'download_count': ('django.db.models.fields.PositiveIntegerField', [], {'default': '0'}),
             'package_file': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
             'pid': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'square_icon': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
+            'square_icon': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'version': ('django.db.models.fields.CharField', [], {'max_length': '10'})
         },
