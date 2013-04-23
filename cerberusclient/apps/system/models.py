@@ -23,6 +23,7 @@ class LocalPackage(models.Model):
 	# status = 1: download finished but not installed
 	# status = 2: installed
 	status = models.PositiveIntegerField()
+	iconFile = models.CharField(max_length=200)
 
 	def __unicode__(self):
 		return self.title

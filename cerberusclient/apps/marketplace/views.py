@@ -13,7 +13,7 @@ import simplejson
 from django.db import models
 import time
 import zipfile
-
+from config import settings
 
 CERBERUS_SERVER = 'http://cerberusserver.cloudapp.net'
 PACKAGES_URL = 'http://cerberusserver.cloudapp.net/api/packages/'
@@ -91,7 +91,7 @@ def triggerDownload(package_id, package_object):
 		print "++++++++++++++++++++++++" + url
 
 		if package_object==None:
-			package_object = LocalPackage(pid=data['pid'],title=data['title'], developer=data['developer'], version=data['version'], status=0, location=TEMP_DIR, download_status=0)		
+			package_object = LocalPackage(pid=data['pid'],title=data['title'], developer=data['developer'], version=data['version'], status=0, location=TEMP_DIR, download_status=0, iconFile="")		
 			package_object.save()
 
 		req = urllib2.Request(url)
@@ -104,10 +104,20 @@ def triggerDownload(package_id, package_object):
 		package_object.status = 1
 		package_object.save()
 
+		# download and save icon the media root
+		
+		icon_url = CERBERUS_SERVER + data['square_icon']
+		print("before download============================")
+		dlfile(icon_url)
+		print("before assigning name=================================")
+		package_object.iconFile = os.path.basename(icon_url)
+		print("before save=============================")
+		package_object.save()
 
 		filename = url.split('/')[-1].split('#')[0].split('?')[0]
 		packageName = filename.split(".")[0]
 		local_path = os.path.join(systemsettings.LOCALPACKAGE_DIR, packageName)	
+		local_path = local_path.replace('\\', '/')
 		unzip(os.path.join(TEMP_DIR,filename), local_path)
 		print "Finished unzipping...."
 		package_object.location = local_path
@@ -184,3 +194,20 @@ def unzip(source_filename, dest_dir):
             zf.extract(member, path)	
 
 
+def dlfile(url):
+    # Open the url
+    try:
+        f = urllib2.urlopen(url)
+        print "downloading " + url
+        #Open our local file for writing
+        path_to_file = os.path.join(settings.MEDIA_ROOT,os.path.basename(url))
+        print "=====================" + path_to_file
+
+        with open(path_to_file, "wb") as local_file:
+            local_file.write(f.read())
+
+    #handle errors
+    except urllib2.HTTPError, e:
+        print "HTTP Error:", e.code, url
+    except urllib2.URLError, e:
+        print "URL Error:", e.reason, url
