@@ -6,8 +6,8 @@ from categories import models as cmodels
 
 # Create your views here.
 def home(request):
-	return
-
+	games = models.Package.objects.all()
+	return render(request,'games/index.html', {'packages':games, 'title': "all games"})
 
 def submitGame(request):
 	if request.user.is_authenticated():
