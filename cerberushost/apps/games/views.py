@@ -19,7 +19,7 @@ def submitGame(request):
 					developer = request.user,
 					package_file = request.FILES['package_file'],
 					category = cmodels.Category.objects.get(pk=request.POST['category']),
-					#square_icon=request.FILES['square_icon'],
+					square_icon=request.FILES['square_icon'],
 					#caption_picture=request.FILES['caption_picture'],
 					version=request.POST['version'])
 				newgame.save()

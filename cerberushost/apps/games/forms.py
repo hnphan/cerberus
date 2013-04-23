@@ -8,7 +8,7 @@ class GameSubmitForm(forms.Form):
 	category = forms.ModelChoiceField(categories.models.Category.objects.all())
 	square_icon = forms.FileField(label='Package icon',
 		help_text='Icon has to be an image file, preferrably 100x100px. Can be left blank.',
-		required=False)
+		required=True)
 	caption_picture = forms.FileField (label='Caption picture',
 		help_text='Caption picture is used in your package home page. Can be left blank.',
 		required=False)
