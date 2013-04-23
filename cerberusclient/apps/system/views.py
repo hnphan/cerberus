@@ -5,10 +5,19 @@ from libs.serializer import JSONSerializer
 import simplejson
 import shutil
 from system import commands
+import subprocess
 
 
 def home(request):
 	return "Hello world!"
+
+def restart(request):
+	subprocess.call(["shutdown /r", "-f", "-s", "-t", "60"])
+	return HttpResponse(status=200)
+
+def shutdown(request):
+    subprocess.call(["shutdown", "-f", "-s", "-t", "0"])
+    return HttpResponse(status=200)
 
 # Get the most recent notifications
 def getRecentNotifs(request, n=10):
