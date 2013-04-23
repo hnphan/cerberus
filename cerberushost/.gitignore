@@ -4,3 +4,4 @@
 *~
 config/environments/local.py
 media
+db
