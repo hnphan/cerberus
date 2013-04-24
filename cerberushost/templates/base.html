@@ -58,7 +58,7 @@
          <div class="span8">
             <div id="header-container">
                <!-- <a id="backbutton" class="win-backbutton" href="javascript: history.go(-1)"></a> -->
-               <h2>cerberus server</h2>
+               <h2><a href = "/">cerberus server</a></h2>
                <!-- <div class="dropdown">
                   <a class="header-dropdown dropdown-toggle accent-color" data-toggle="dropdown" href="#">
                      Start
@@ -79,8 +79,8 @@
           <div class="pull-left">
             {% if user.is_authenticated %} 
             <div class="top-info-block">
-            <h3><a href="/accounts/">{{ user.username }}</a></h3>
-            <a href="/accounts/logout/">Log out</a>
+            <h3><a href="#">{{ user.username }}</a></h3>
+            <h4><a href="/accounts/logout/">Log out</a></h4>
             </div>
           </div>
             {% else %} 

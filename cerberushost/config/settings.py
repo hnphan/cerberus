@@ -187,6 +187,8 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
+LOGIN_REDIRECT_URL ="/"
+
 STATICFILES_FINDERS = global_settings.STATICFILES_FINDERS + (
     'compressor.finders.CompressorFinder',
 )

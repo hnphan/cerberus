@@ -294,6 +294,11 @@ a {
    /*cursor: default;*/
 }
 
+a:hover{
+   text-decoration: none;
+   /*cursor: default;*/
+}
+
 /*
 No border on images when in a link.
 */
@@ -2018,10 +2023,11 @@ header h1 {display: inline;}
 #top-info a {
    display: inline-block;
    height: 46px;
-   color: #5A5A5A;
+   color: #FFF;
 }
 #top-info a:hover {
-   color: #000;
+   color: rgb(83, 208, 240);
+   text-decoration: none;
 }
    .top-info-block {
       display: block;
